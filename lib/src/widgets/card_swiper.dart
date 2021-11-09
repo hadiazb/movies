@@ -1,9 +1,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:peliculas_app/src/models/models.dart';
 
 class CardSwiper extends StatefulWidget {
-  const CardSwiper({Key? key}) : super(key: key);
+  final List<Movie> movies;
 
+  const CardSwiper({Key? key, required this.movies}) : super(key: key);
   @override
   _CardSwiperState createState() => _CardSwiperState();
 }
