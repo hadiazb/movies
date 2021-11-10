@@ -34,10 +34,16 @@ class Movie {
   int voteCount;
 
   get fullPosterImg {
-    // return 'https://image.tmdb.org/t/p/w500/fM1HPebotc4TQh4wnMx5mRufC3g.jpg';
-
     if (posterPath != null) {
       return 'https://image.tmdb.org/t/p/w500$posterPath';
+    }
+
+    return 'https://i.stack.imgur.com/GNhxO.png';
+  }
+
+  get fullBackdropPath {
+    if (posterPath != null) {
+      return 'https://image.tmdb.org/t/p/w500$backdropPath';
     }
 
     return 'https://i.stack.imgur.com/GNhxO.png';
