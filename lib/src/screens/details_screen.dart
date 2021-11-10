@@ -8,7 +8,6 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
-    print(movie);
 
     return Scaffold(
       body: CustomScrollView(
@@ -81,12 +80,15 @@ class _PosterAndTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
-              height: 150,
-              image: NetworkImage(movie.fullPosterImg),
-              placeholder: AssetImage('assets/no-image.jpg'),
+          Hero(
+            tag: movie.heroId!,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FadeInImage(
+                height: 150,
+                image: NetworkImage(movie.fullPosterImg),
+                placeholder: AssetImage('assets/no-image.jpg'),
+              ),
             ),
           ),
           const SizedBox(

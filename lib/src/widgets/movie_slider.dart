@@ -19,7 +19,6 @@ class _MovieSliderState extends State<MovieSlider> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     scrollController.addListener(() {
@@ -59,8 +58,11 @@ class _MovieSliderState extends State<MovieSlider> {
                 controller: scrollController,
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.movies.length,
-                itemBuilder: (_, int index) =>
-                    _MoviePoster(movies: widget.movies[index])),
+                itemBuilder: (_, int index) => _MoviePoster(
+                      movie: widget.movies[index],
+                      heroId:
+                          '${widget.title}-${index}-${widget.movies[index].id}',
+                    )),
           )
         ],
       ),
@@ -71,12 +73,15 @@ class _MovieSliderState extends State<MovieSlider> {
 void onNextPage() {}
 
 class _MoviePoster extends StatelessWidget {
-  const _MoviePoster({Key? key, required this.movies}) : super(key: key);
+  const _MoviePoster({Key? key, required this.movie, required this.heroId})
+      : super(key: key);
 
-  final Movie movies;
+  final Movie movie;
+  final String heroId;
 
   @override
   Widget build(BuildContext context) {
+    movie.heroId = heroId;
     return Container(
       width: 130,
       height: 190,
@@ -85,15 +90,18 @@ class _MoviePoster extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () =>
-                Navigator.pushNamed(context, 'details', arguments: movies),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/no-image.jpg'),
-                image: NetworkImage(movies.fullPosterImg),
-                width: 130,
-                height: 190,
-                fit: BoxFit.cover,
+                Navigator.pushNamed(context, 'details', arguments: movie),
+            child: Hero(
+              tag: movie.heroId!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/no-image.jpg'),
+                  image: NetworkImage(movie.fullPosterImg),
+                  width: 130,
+                  height: 190,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -101,7 +109,7 @@ class _MoviePoster extends StatelessWidget {
             height: 5,
           ),
           Text(
-            movies.title,
+            movie.title,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             textAlign: TextAlign.center,

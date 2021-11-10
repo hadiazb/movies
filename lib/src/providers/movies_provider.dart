@@ -5,6 +5,7 @@ import 'package:peliculas_app/src/models/movie.dart';
 
 // Nosotros
 import 'package:peliculas_app/src/models/now_playing_response.dart';
+import 'package:peliculas_app/src/models/search_response.dart';
 
 class MoviesProvider extends ChangeNotifier {
   final String _apiKey = 'ca911080e9c4d4c6fe846e025bea59db';
@@ -24,7 +25,7 @@ class MoviesProvider extends ChangeNotifier {
   }
 
   Future<String> _getJsonData(String endPoint, [int page = 1]) async {
-    var url = Uri.https(_baseUrl, endPoint,
+    final url = Uri.https(_baseUrl, endPoint,
         {'api_key': _apiKey, 'language': _language, 'page': '$page'});
     final response = await http.get(url);
     return response.body;
@@ -60,5 +61,13 @@ class MoviesProvider extends ChangeNotifier {
     moviesCast[movieId] = credictsResponse.cast;
 
     return credictsResponse.cast;
+  }
+
+  Future<List<Movie>> searchMovie(String query) async {
+    final url = Uri.https(_baseUrl, '3/search/movie',
+        {'api_key': _apiKey, 'language': _language, 'query': query});
+    final response = await http.get(url);
+    final searchResponse = SearchResponse.fromJson(response.body);
+    return searchResponse.results;
   }
 }
